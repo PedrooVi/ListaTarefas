@@ -22,7 +22,7 @@
             $_SESSION["login"] = $login; 
             header('Location: pags/tarefas.php'); //Redireciona para pagina de tarefas
         } else {
-            die("Login ou senha incorretos"); //!em desenvolvimento!
+            echo "Login ou senha incorretos"; //!em desenvolvimento!
         }
     }  
 ?>

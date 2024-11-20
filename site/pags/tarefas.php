@@ -27,7 +27,6 @@
         </div>
 
         <div class="formPesquisa">
-
             <div class="pesquisa">
                 <form method="get">
                     <label for="txtBuscar">Pesquisar</label>
@@ -60,7 +59,7 @@
                     </thead>
                     <tbody>
                         <?php
-                            include('../src/tarefasbd.php'); //Link para o php sem redirecionar
+                            require_once('../src/tarefasbd.php'); //Link para o php sem redirecionar
                         ?>
                     </tbody>
                 </table>

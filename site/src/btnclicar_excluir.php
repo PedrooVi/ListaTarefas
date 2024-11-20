@@ -22,5 +22,7 @@
             $tarefaId = $_GET["tarefaId"]; 
             $codigoUpdate = "DELETE FROM tarefas WHERE id = '$tarefaId' AND usuarios_idusuario = '$idusuario'";
             $delete = mysqli_query($conn, $codigoUpdate);
+
+            header("Location: ../pags/tarefas.php?txtBuscar=&filtro=todos");
         }
 ?>

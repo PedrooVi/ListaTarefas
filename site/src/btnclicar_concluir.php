@@ -22,5 +22,7 @@
         $tarefaId = $_GET["tarefaId"]; 
         $codigoUpdate = "UPDATE tarefas SET estado = '1' WHERE id = '$tarefaId' AND usuarios_idusuario = '$idusuario'";
         $update = mysqli_query($conn, $codigoUpdate);
+
+        header("Location: ../pags/tarefas.php?txtBuscar=&filtro=todos");
     }
 ?>

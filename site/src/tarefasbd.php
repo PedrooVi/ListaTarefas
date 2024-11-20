@@ -1,5 +1,6 @@
 <?php
     //Inicia uma sessao
+    
     session_start();
 
     //Abre uma conexao com o banco de dados
@@ -20,7 +21,7 @@
 
     $idusuario = $usuario["idusuario"]; //Apenas captamos o id, pois é o que necessitamos
 
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
+    if($_SERVER["REQUEST_METHOD"] == "POST") {      
         //Obtem a tarefa digitada pelo usuario
         //Sem necessitar de atribuir isset pois ja barramos a tarefa enviada como null em js
         $novaTarefa = $_POST["txtTarefa"];
@@ -29,14 +30,14 @@
         $inserirDadosTabela = "INSERT INTO tarefas VALUES(default, '$novaTarefa', default, '$idusuario')";
         mysqli_query($conn, $inserirDadosTabela); 
 
-        header("Location: " . $_SERVER['PHP_SELF']); //Recarrega os cookies ("nao entendi muito bem, mas resolveu o problema de duplicata de dados")
-        exit;
+        //header("Location: " . $_SERVER['PHP_SELF']); //Recarrega os cookies ("nao entendi muito bem, mas resolveu o problema de duplicata de dados")
+        //exit;
+        mostrarTarefas($conn, $idusuario);
     }
 
     if($_SERVER["REQUEST_METHOD"] == "GET") { //Metodo get vindo do formulario de pesquisa
-        $campoPesquisa = isset($_GET["txtBuscar"])? $_GET["txtBuscar"]: ""; //Obtem o que esta no campo de pesquisa
-        $filtro = isset($_GET["filtro"])? $_GET["filtro"]: ""; //Obtem o que selecionado no campo de filtro Todos, Pendentes, Concluido
-
+       $campoPesquisa = isset($_GET["txtBuscar"])? $_GET["txtBuscar"]: ""; //Obtem o que esta no campo de pesquisa
+       $filtro = isset($_GET["filtro"])? $_GET["filtro"]: ""; //Obtem o que selecionado no campo de filtro Todos, Pendentes, Concluido
         
         //Para esta filtragem utilizei 6 hipoteses
         //1- Campo de pesquisa vazio + Filtro escolhido = todos
@@ -63,6 +64,44 @@
     }
     
     //RESUMO DE TODAS AS FUNCOES: o codigo que vai ser injetado no banco de dados será o select e para cada uma das funções as condições sera diferente um exemplo é a funcao que eu quero so as tarefas concluidas entao o a condição é por exemplo um select nome, estado where estado = concluida, para cada funcao é adaptada a saida dentro da tabela de forma padronizada os botaos estao em !em desenvolvimento!
+
+    function mostrarTarefas($conn, $idusuario) {
+        $tarefasUsuario = "SELECT id, nome, estado FROM tarefas WHERE usuarios_idusuario = '$idusuario'";
+    
+        $tarefasTabela = mysqli_query($conn, $tarefasUsuario);
+    
+        while($linha = $tarefasTabela  -> fetch_assoc()) {
+            $idTarefa = $linha["id"];
+            if($linha["estado"] == 0) {
+                echo "<tr>
+                <td id='tarefa-{$idTarefa}' name='tarefa-{$idTarefa}'>" . $linha["nome"] . "</td>
+                    <form action='../src/btnclicar_concluir.php' method='get'>
+                        <input type='hidden' name='tarefaId' value='". $idTarefa. "';>
+                        <td><button type='submit'>
+                            <i class='fa-solid fa-check'></i>
+                        </button></td>
+                    </form>
+                    <form action='../src/btnclicar_excluir.php' method='get'>
+                        <input type='hidden' name='tarefaId' value='". $idTarefa. "';>
+                        <td><button type='submit'>
+                            <i class='fa fa-trash' aria-hidden='true'></i>
+                        </button></td>
+                    </form>
+                
+                </tr>";
+            } else {
+                echo "<tr>
+                <td>" . $linha["nome"] . "</td>
+                <form action='../src/btnclicar_excluir.php' method='get'>
+                    <input type='hidden' name='tarefaId' value='". $idTarefa. "';>
+                    <td><button type='submit'>
+                        <i class='fa fa-trash' aria-hidden='true'></i>
+                    </button></td>
+                </form>
+                </tr>";
+            }
+        }
+    }
 
     function mostrarTarefasNUTD($conn, $idusuario, $campoPesquisa) {
         $tarefasUsuario = "SELECT id, nome, estado FROM tarefas WHERE usuarios_idusuario = '$idusuario'";
@@ -180,7 +219,6 @@
             </form>
                 </tr>";
             }
-            //<td><button>Concluir</button></td>
         }
     }
 
