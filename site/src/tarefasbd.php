@@ -25,20 +25,32 @@
         //Obtem a tarefa digitada pelo usuario
         //Sem necessitar de atribuir isset pois ja barramos a tarefa enviada como null em js
         $novaTarefa = $_POST["txtTarefa"];
+        
+        $verificarDadosExistentes = "SELECT * FROM tarefas WHERE nome = '$novaTarefa'"; //Vefifica se na tabela ja possui a tarefa
 
-        //Insere na tabela correspondente ao id do usuario a nova tarefa 
-        $inserirDadosTabela = "INSERT INTO tarefas VALUES(default, '$novaTarefa', default, '$idusuario')";
-        mysqli_query($conn, $inserirDadosTabela); 
+        $resultado = mysqli_query($conn, $verificarDadosExistentes);
 
+        if(mysqli_num_rows($resultado) > 0) { //Caso possua
+            echo "tarefa ja adicionada!"; 
+        } else { //Caso nao possua
+            //Insere na tabela correspondente ao id do usuario a nova tarefa 
+            echo "";
+            $inserirDadosTabela = "INSERT INTO tarefas VALUES(default, '$novaTarefa', default, '$idusuario')";
+            mysqli_query($conn, $inserirDadosTabela);     
+        }
+        
         //header("Location: " . $_SERVER['PHP_SELF']); //Recarrega os cookies ("nao entendi muito bem, mas resolveu o problema de duplicata de dados")
         //exit;
+
+        //nome auto explicativo ;) logo abaixo
         mostrarTarefas($conn, $idusuario);
     }
-
+    
     if($_SERVER["REQUEST_METHOD"] == "GET") { //Metodo get vindo do formulario de pesquisa
-       $campoPesquisa = isset($_GET["txtBuscar"])? $_GET["txtBuscar"]: ""; //Obtem o que esta no campo de pesquisa
-       $filtro = isset($_GET["filtro"])? $_GET["filtro"]: ""; //Obtem o que selecionado no campo de filtro Todos, Pendentes, Concluido
+        $campoPesquisa = isset($_GET["txtBuscar"])? $_GET["txtBuscar"]: ""; //Obtem o que esta no campo de pesquisa
+        $filtro = isset($_GET["filtro"])? $_GET["filtro"]: ""; //Obtem o que selecionado no campo de filtro Todos, Pendentes, Concluido
         
+        echo "";
         //Para esta filtragem utilizei 6 hipoteses
         //1- Campo de pesquisa vazio + Filtro escolhido = todos
         //2- Campo de pesquisa vazio + Filtro escolhido = pendentes
@@ -47,7 +59,7 @@
         //5- Campo de pesquisa preenchido + FIltro escolhido = pendentes
         //6- Campo de pesquisa preenchido + Filtro escolhido = concluidas
         //Para cada hipotese criei uma funcao para exibição !em desenvolvimento!
-
+        
         if($campoPesquisa == "" && $filtro == "todos") { 
             mostrarTarefasNUTD($conn, $idusuario, $campoPesquisa);
         } else if($campoPesquisa == "" && $filtro == "pendentes") {
@@ -64,6 +76,7 @@
     }
     
     //RESUMO DE TODAS AS FUNCOES: o codigo que vai ser injetado no banco de dados será o select e para cada uma das funções as condições sera diferente um exemplo é a funcao que eu quero so as tarefas concluidas entao o a condição é por exemplo um select nome, estado where estado = concluida, para cada funcao é adaptada a saida dentro da tabela de forma padronizada os botaos estao em !em desenvolvimento!
+    //botao v2 = adição de id por meio de inputs, fazendo cada tarefa receber o mesmo id do banco 
 
     function mostrarTarefas($conn, $idusuario) {
         $tarefasUsuario = "SELECT id, nome, estado FROM tarefas WHERE usuarios_idusuario = '$idusuario'";
