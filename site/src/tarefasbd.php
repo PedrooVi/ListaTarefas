@@ -26,18 +26,16 @@
         //Sem necessitar de atribuir isset pois ja barramos a tarefa enviada como null em js
         $novaTarefa = $_POST["txtTarefa"];
         
-        $verificarDadosExistentes = "SELECT * FROM tarefas WHERE nome = '$novaTarefa'"; //Vefifica se na tabela ja possui a tarefa
+        $verificarDadosExistentes = "SELECT * FROM tarefas WHERE nome = '$novaTarefa' AND usuarios_idusuario = '$idusuario'"; //Vefifica se na tabela ja possui a tarefa
 
         $resultado = mysqli_query($conn, $verificarDadosExistentes);
 
-        if(mysqli_num_rows($resultado) > 0) { //Caso possua
-            echo "tarefa ja adicionada!"; 
-        } else { //Caso nao possua
+        if(!mysqli_num_rows($resultado) > 0) { //Caso não possua
             //Insere na tabela correspondente ao id do usuario a nova tarefa 
             echo "";
             $inserirDadosTabela = "INSERT INTO tarefas VALUES(default, '$novaTarefa', default, '$idusuario')";
             mysqli_query($conn, $inserirDadosTabela);     
-        }
+        } 
         
         //header("Location: " . $_SERVER['PHP_SELF']); //Recarrega os cookies ("nao entendi muito bem, mas resolveu o problema de duplicata de dados")
         //exit;

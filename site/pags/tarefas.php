@@ -12,32 +12,33 @@
 
 <body style="background-image: url('../imgs/Background.jpg'); background-size: cover;">
 
-    <div class="container">
-        <h1>To Do List</h1>
+    <div class="container_geral">
+        <div class="container_esquerda">
 
-        <div class="addTarefa">
-            <form method="post" onsubmit="return adicionarTarefaNula()">
-                <label for="txtTarefa">Adicione sua tarefa</label>
-                <br>
-                <input type="text" id="txtTarefa" name="txtTarefa" placeholder="O que você vai fazer?">
-            <button id="btn">
-                    <i class="fa-thin fa-plus"> </i>
-            </button>
-            </form>
-        </div>
+            <h1>To Do List</h1>
 
-        <div class="formPesquisa">
-            <div class="pesquisa">
+            <div class="addTarefa">
+                <form method="post" onsubmit="return adicionarTarefaNula()">
+                    <label for="txtTarefa">Adicione sua tarefa</label>
+                    <br>
+                    <input type="text" id="txtTarefa" name="txtTarefa" placeholder="O que você vai fazer?">
+                <button class="btn_add">
+                        <i class="fa-thin fa-plus"> </i>
+                </button>
+                </form>
+            </div>
+
+            <div class="pesquisa">  
                 <form method="get">
                     <label for="txtBuscar">Pesquisar</label>
                     <br>
                     <input type="text" name="txtBuscar" placeholder="Buscar...">
-                <button class="btn" type="submit">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-            </div>
+                    <button class="btn_pesquisa" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
                 
-            <div class="filtro">
+                <div class="filtro">
                     <label for="filtro">Filtrar: </label>
                     <br>
                     <select name="filtro" id="filtro">
@@ -45,24 +46,23 @@
                         <option value="pendentes">Pendentes</option>
                         <option value="concluidas">Concluidas</option>
                     </select>
-                </div>
-            </form>
+                </form>    
+            </div> 
         </div>
-            
-        <div class="tarefas">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Suas Tarefas</th>
-                        </tr>
-                        <!-- ISAAAAAAACCCC NAO ESQUECE ESSES BOOOTTOOOEESSSS (NAO ESQUECI!) -->
-                    </thead>
-                    <tbody>
-                        <?php
-                            require_once('../src/tarefasbd.php'); //Link para o php sem redirecionar
-                        ?>
-                    </tbody>
-                </table>
+
+        <div class="container_direita">
+            <table class="tarefinhas">
+                 <h3>Suas Tarefas</h3>
+                <thead>
+                    <!-- ISAAAAAAACCCC NAO ESQUECE ESSES BOOOTTOOOEESSSS (NAO ESQUECI!) -->
+                    <!-- TABELA É COISA DE ARROMBADO, EU ODEIO TABELAS EM HTML 😠 -->
+                </thead>
+                <tbody>
+                    <?php
+                        require_once('../src/tarefasbd.php'); //Link para o php sem redirecionar
+                     ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

@@ -3,7 +3,7 @@ function adicionarTarefaNula() {
     campoTarefa = campoTarefa.value;
 
     if(campoTarefa == "") {
-        alert("null"); //!em desenvolvimento!
+        alert("Digite uma tarefa!"); //!em desenvolvimento!
 
         return false;
     } 
