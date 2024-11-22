@@ -1,0 +1,213 @@
+/*  Texto para explicar a situação:
+
+#se a palavra da tarefa for pequena os botoes da tabela de alinham de uma forma aleatoria, mas se a palavra
+for grande, os botoes alinham certo.
+
+#se colocar a tarefa como completada, a tarefa quebra.
+
+#se criar uma tarefa e recaregar a pagina, a tarefa se clona.
+
+#obvio q não esta responsivo.
+
+#Isaac, saiba q da pra colocar barra de rolada em qualquer div.
+
+#usei bastante gpt na parte da tabela.
+
+#tentei comentar o maximo de coisas q alterei pra ficar legivel o codigo, 
+inclusive o container q ta com os problemas está lá em baixo, a tabela tmb (linha 151).
+
+#é isso, favor deixar o texto aq ate a glr q for resolver ver, ou informe o resto, to a horas aq e não to 
+com paciencia pra abrir o zap e recrever isso em um telefone, tmb não vou logar no zap de pc.
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    color: #fff;
+    font-family: 'Muli', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    overflow: visible;
+}
+
+
+.container_geral{
+    display: flex; /* <- favor não mexer */
+    gap: 20px;
+}
+
+h1 {
+    display: flex;
+    grid-area: titulo;
+    display: block; 
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.container_esquerda {
+    grid-area: esquerda;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+
+    "titulo titulo titulo"
+    "addTarefa addTarefa addTarefa"
+    "pesquisa pesquisa filtro";
+
+    grid-gap: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding: 10px 10px;      
+    height: 250px;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+}
+.container_esquerda ::placeholder{
+    font-size: smaller;
+}
+
+/* separando areas para o grid do conteiner_esquerda */
+.addTarefa{
+    grid-area: addTarefa;
+}
+.pesquisa{
+    grid-area: pesquisa;
+    gap: 0px;
+}
+.filtro{
+    grid-area: filtro;
+}
+
+/*Butão de Cima*/
+.btn_add{
+    height: 30px;
+    margin-left: 0.5%;
+    width: 30px;
+    background-color: rgb(233, 217, 130);
+    border:  1px solid ;
+}
+
+/*Butão de baixo */
+.btn_pesquisa {
+    height: 30px;
+    margin-left: 1%;
+    width: 30px;
+    background-color: rgb(233, 217, 130);
+    border:  1px solid ;
+}
+
+/* imputs */
+input{
+    height: 30px;
+    margin: 0px;
+    border-style: solid;
+    border-color:  rgb(197, 197, 197);
+    border: 4px;
+}
+
+.addTarefa input{
+    margin-top: 10px;
+    width: 45%;
+}
+.pesquisa input{
+    margin-top: 10px;
+    width: 68.5%;
+}
+
+/* style select */
+select{
+    height: 30px;
+    width: 100%;
+}
+.filtro select{
+    margin-top: 10px;
+    width: 100%;
+    font-size: 11px;              
+    font-weight: normal; 
+    border-color:  rgb(197, 197, 197); 
+}
+select:focus {
+    outline: none;
+}
+
+.container_direita {
+    border-collapse: separate; /* Impede que o css crie 2 bordas na tabela, sim ele faz isso as vezes :( */
+    overflow-y: scroll;        /* Habilita a rolada vertical quando necessário */
+    overflow-x: hidden;        /* Desabilita a rolada horizontal */
+    
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding: 10px 10px;
+    height: 250px;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+}
+
+h3{
+    text-align: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* style barra de rolada */
+.container_direita::-webkit-scrollbar {
+    background-color: rgba(46, 46, 46, 0.8); /* Cor de fundo da barra */
+}
+.container_direita::-webkit-scrollbar-thumb{
+    background-color: rgb(233, 217, 130); /* Coisa que voce segura pra mover a barra de roladas */
+    border-radius: 5px;
+    border:  1px solid  black;
+}
+
+/* A RAIZ DE TODO MAL */
+table {   
+    width: 100%;             
+    border-collapse: collapse; 
+    margin: 20px 0;           
+    text-align: left;         
+    font-family: Arial, sans-serif;  
+    align-items: right;
+    border-collapse: separate; /* Garante que o espaçamento seja aplicado (obrigado gpt)*/
+    table-layout: fixed;       /* Assegura que as colunas sigam as larguras definidas (obrigado gpt)*/
+    border-spacing: 0 3px;     /* 0px para colunas e 10px para linhas */
+}
+
+tr{
+    background-color: rgba(164, 124, 182, 0.911);
+    margin-bottom: 10px; 
+    border: 1px solid;
+}
+
+td {
+    word-wrap: break-word;  /* Quebra as palavras longas, ou deveria fazer isso */
+    color: black;
+    overflow: hidden;       /* Não deixa a palavras esticar a div */
+}
+
+/* Tentativa frustrada de alinhar o texto da tarefa (primeira celula) na esquerda */
+td:first-child {           
+    text-align: left;
+}
+
+/* Tentativa de alinhar a segunda e terceira células à direita (desobrigado gpt, não funciona)*/
+td:nth-child(2), td:nth-child(3) {
+    text-align: right;
+}
